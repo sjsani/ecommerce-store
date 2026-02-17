@@ -1,26 +1,31 @@
 import React from 'react'
-import Container from './ui/Container'
 import Link from 'next/link'
 import MainNav from './MainNav'
 import GetCategories from '@/actions/GetCategories'
 import NavbarActions from './NavbarActions'
 
 export const revalidate = 0
+
 const Navbar = async () => {
   const categories = await GetCategories()
+
   return (
-    <div>
-      <Container>
-        <div className='relative px-4 sm:px-6 lg:px-8 flex h-16 items-center '>
-        <Link href="/" className='ml-4 flex lg:ml-0 gap-x-2'>
-          <p className='font-bold text-xl'>
-           STORE 
-          </p>
-        </Link>
-        <MainNav data={categories} />
-        <NavbarActions />
+    <div className="border-b">
+      <div className="flex h-16 items-center justify-between px-6 lg:px-10 w-full">
+
+        {/* LEFT SIDE */}
+        <div className="flex items-center gap-x-8">
+          <Link href="/" className="font-bold text-xl">
+            STORE
+          </Link>
+
+          <MainNav data={categories} />
         </div>
-      </Container>
+
+        {/* RIGHT SIDE */}
+        <NavbarActions />
+
+      </div>
     </div>
   )
 }

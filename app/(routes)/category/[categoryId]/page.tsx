@@ -4,8 +4,6 @@ import GetCategory from '@/actions/GetCategory';
 import GetColors from '@/actions/GetColor';
 import GetProducts from '@/actions/GetProducts';
 import GetSizes from '@/actions/GetSizes';
-import Billboard from '@/components/Billboard';
-
 import React from 'react'
 import Filter from './components/Filter';
 import NoResults from '@/components/ui/no-result';
@@ -27,7 +25,7 @@ interface CategoryPageProps {
 const CategoryPage: React.FC<CategoryPageProps> =  async({
   params, searchParams
 }) => {
-  const {categoryId} = params;
+  const {categoryId} = await params;
   const {colorId, sizeId} = await searchParams;
   const products = await GetProducts({
     categoryId: categoryId,
@@ -37,12 +35,16 @@ const CategoryPage: React.FC<CategoryPageProps> =  async({
   const sizes = await GetSizes()
   const colors = await GetColors()
   const category = await GetCategory(categoryId)
+  
+  if (!category) {
+    return <div className='text-center py-10'>Category not found</div>;
+  }
+  
   return (
     <div className='bg-white'>
-      <Container>
-      <Billboard data={category.billboard}/>
+      <Container fullWidth>
       <div className='px-4 sm:px-6 lg:px-8 pb-24'>
-        <div className='lg:grid lg:grid-cols-5 lg:gap-x-8'>
+        <div className='lg:grid lg:grid-cols-5 lg:gap-x-8 pt-10'>
           <MobileFilters sizes={sizes} colors={colors} />
           <div className='hidden lg:block'>
           <Filter 
